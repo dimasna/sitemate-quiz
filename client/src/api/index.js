@@ -27,7 +27,7 @@ export const readIssue = async (issueId) => {
     throw error;
   }
 };
-export const readIssueAll = async (issueId) => {
+export const readIssueAll = async () => {
   try {
     const response = await api.get(`/issues`);
     return response.data;
