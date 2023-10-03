@@ -25,11 +25,11 @@ Before you begin, ensure you have Docker and Docker Compose installed on your ma
     docker-compose up
     ```
 
-3. Access the React app:
+3. Access the Frontend :
 
     Open your browser and go to [http://localhost:3000](http://localhost:3000).
 
-4. Access the Node.js API:
+4. Access the Backend:
 
     The Node.js API is available at [http://localhost:3001](http://localhost:3001).
 
