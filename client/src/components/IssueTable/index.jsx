@@ -10,40 +10,45 @@ import {
   chakra,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { AiFillEdit, AiTwotoneLock } from "react-icons/ai";
-import { BsBoxArrowUpRight, BsFillTrashFill } from "react-icons/bs";
+import { BsFillTrashFill } from "react-icons/bs";
+import { deleteIssue } from '../../api';
+import EditIssue from "../EditIssue";
 
-export default function IssueTable(){
-  const data = [
-    { name: "Daggy", created: "7 days ago" },
-    { name: "Anubra", created: "23 hours ago" },
-    { name: "Josef", created: "A few seconds ago" },
-    { name: "Sage", created: "A few hours ago" },
-  ];
+export default function IssueTable({data, updateData}){
+
   const bg = useColorModeValue("white", "gray.800");
   const bg2 = useColorModeValue("white", "gray.800");
   const bg3 = useColorModeValue("gray.100", "gray.700");
 
+  const handleDelete = async (id) => {
+    try {
+  await deleteIssue(id);
+      updateData();
+    } catch (error) {
+      alert('Error deleting issue:', error);
+    }
+  };
+
+
   return (
     <Flex
       w="full"
-      bg="#edf3f8"
-      _dark={{ bg: "#3e3e3e" }}
-      p={50}
       alignItems="center"
       justifyContent="center"
+      rounded="lg" 
     >
       <Stack
         direction={{ base: "column" }}
         w="full"
         bg={{ md: bg }}
         shadow="lg"
+        rounded="lg" 
       >
-        {data.map((token, tid) => {
-          return (
-            <Flex direction={{ base: "row", md: "column" }} bg={bg2} key={tid}>
+
+            <Flex rounded="lg" direction={{ base: "row", md: "column" }} bg={bg2} key={0}>
               <SimpleGrid
                 spacingY={3}
+                roundedTop="lg"
                 columns={{ base: 1, md: 4 }}
                 w={{ base: 120, md: "full" }}
                 textTransform="uppercase"
@@ -54,12 +59,15 @@ export default function IssueTable(){
                 fontSize="md"
                 fontWeight="hairline"
               >
-                <span>Name</span>
-                <span>Created</span>
-                <span>Data</span>
+                <span>ID</span>
+                <span>Title</span>
+                <span>Description</span>
                 <chakra.span textAlign={{ md: "right" }}>Actions</chakra.span>
               </SimpleGrid>
+              {data?.map((issue, tid) => {
+                return (
               <SimpleGrid
+              key={tid}
                 spacingY={3}
                 columns={{ base: 1, md: 4 }}
                 w="full"
@@ -67,48 +75,42 @@ export default function IssueTable(){
                 px={10}
                 fontWeight="hairline"
               >
-                <span>{token.name}</span>
+                <span>{issue.id}</span>
                 <chakra.span
                   textOverflow="ellipsis"
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  {token.created}
+                  {issue.title}
                 </chakra.span>
-                <Flex>
-                  <Button
-                    size="sm"
-                    variant="solid"
-                    leftIcon={<Icon as={AiTwotoneLock} />}
-                    colorScheme="purple"
-                  >
-                    View Profile
-                  </Button>
-                </Flex>
+
+                <chakra.span
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                >
+                  {issue.desc}
+                </chakra.span>
+
                 <Flex justify={{ md: "end" }}>
                   <ButtonGroup variant="solid" size="sm" spacing={3}>
-                    <IconButton
-                      colorScheme="blue"
-                      icon={<BsBoxArrowUpRight />}
-                      aria-label="Up"
-                    />
-                    <IconButton
-                      colorScheme="green"
-                      icon={<AiFillEdit />}
-                      aria-label="Edit"
-                    />
+                
+                   <EditIssue updateData={updateData} data={issue}/>
                     <IconButton
                       colorScheme="red"
                       variant="outline"
                       icon={<BsFillTrashFill />}
                       aria-label="Delete"
+                      onClick={() => handleDelete(issue.id)}
                     />
                   </ButtonGroup>
                 </Flex>
               </SimpleGrid>
+                )
+              })}
             </Flex>
-          );
-        })}
+          
+        
       </Stack>
     </Flex>
   );

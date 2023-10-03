@@ -27,6 +27,15 @@ export const readIssue = async (issueId) => {
     throw error;
   }
 };
+export const readIssueAll = async (issueId) => {
+  try {
+    const response = await api.get(`/issues`);
+    return response.data;
+  } catch (error) {
+    console.error('Error reading issue:', error);
+    throw error;
+  }
+};
 
 export const updateIssue = async (issueId, updatedData) => {
   try {

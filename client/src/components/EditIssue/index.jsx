@@ -11,17 +11,15 @@ import {
     Button,
     FormControl,
     FormLabel,
-    Input
+    Input,
+    IconButton
   } from '@chakra-ui/react'
-  import { createIssue } from '../../api';
+  import { AiFillEdit } from "react-icons/ai";
+  import { updateIssue } from '../../api';
 
-export default function InputIssue({updateData}) {
+export default function EditIssue({updateData, data}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const initIssue = {
-        title: '',
-        desc:''
-    };
-    const [issue, setIssue] = useState(initIssue)
+    const [issue, setIssue] = useState(data)
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
 
@@ -34,21 +32,25 @@ export default function InputIssue({updateData}) {
       };
 
 
-    const handleCreate = async () => {
+    const handleUpdate = async () => {
         try {
-          const newIssue = await createIssue(issue);
-          console.log('Created:', newIssue);
-          setIssue(initIssue);
+          const newIssue = await updateIssue(issue.id, issue);
+          console.log('Updated:', newIssue)
           updateData();
           onClose();
         } catch (error) {
-          alert('Error creating issue:', error);
+          alert('Error updating issue:', error);
         }
       };
   
     return (
       <>
-        <Button  onClick={onOpen}>+ Add Issue</Button>
+         <IconButton
+                      colorScheme="green"
+                      icon={<AiFillEdit />}
+                      aria-label="Edit"
+                      onClick={onOpen}
+                    />
   
         <Modal
           initialFocusRef={initialRef}
@@ -58,7 +60,7 @@ export default function InputIssue({updateData}) {
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Add new issue</ModalHeader>
+            <ModalHeader>Update Issue #{data.id}</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
@@ -73,7 +75,7 @@ export default function InputIssue({updateData}) {
             </ModalBody>
   
             <ModalFooter>
-              <Button colorScheme='blue' mr={3} onClick={handleCreate}>
+              <Button colorScheme='blue' mr={3} onClick={handleUpdate}>
                 Save
               </Button>
               <Button onClick={onClose}>Cancel</Button>
