@@ -50,3 +50,5 @@ app.delete('/api/issues/:id', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running at https://localhost:${port}`);
 });
+
+module.exports = app;
