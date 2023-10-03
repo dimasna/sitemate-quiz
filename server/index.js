@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
+const port = 4000;
 app.use(bodyParser.json());
 
 let issues = [
@@ -13,7 +13,7 @@ let issues = [
 
 // Create: accepts a JSON object & prints/logs the object
 app.post('/api/issues', (req, res) => {
-    const newIssue = req.body;
+    const newIssue = {...req.body, id: issues.length+1};
     issues.push(newIssue);
     console.log('Created: ',  newIssue);
     res.json(newIssue);
@@ -24,6 +24,11 @@ app.get('/api/issues/:id', (req, res) => {
     const issue = issues.find((i) => i.id === id);
     console.log('Read: ',  issue);
     res.json(issue);
+});
+// Read All: return static JSON object
+app.get('/api/issues', (req, res) => {
+    console.log('Read: ',  issues);
+    res.json(issues);
 });
 // Update: accepts a JSON object & prints/logs the object
 app.put('/api/issues/:id', (req, res) => {
