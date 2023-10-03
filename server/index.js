@@ -42,7 +42,7 @@ app.put('/api/issues/:id', (req, res) => {
 app.delete('/api/issues/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const deletedIssue = issues.find((i) => i.id === id);
-    issues = issues.map((i) => i.id === id ? updatedIssue : i);
+    issues = issues.filter((i) => i.id !== id);
     console.log('Deleted: ',  deletedIssue);
     res.json(deletedIssue);
 });
