@@ -1,6 +1,6 @@
-# Project Name
+# Sitemate Quiz
 
-Description of your project.
+Sitemate Challenge
 
 ## Prerequisites
 
