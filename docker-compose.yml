@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    image: "sitemate-quiz-server:latest"
+    container_name: server
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    image: "sitemate-quiz-client:latest"
+    container_name: client
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - server
+
+networks:
+  app-network:
+    driver: bridge

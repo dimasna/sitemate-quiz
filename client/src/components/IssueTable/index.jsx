@@ -1,9 +1,7 @@
 import React from "react";
 import {
-  Button,
   ButtonGroup,
   Flex,
-  Icon,
   IconButton,
   SimpleGrid,
   Stack,
